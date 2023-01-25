@@ -50,6 +50,8 @@
       border-radius: 2rem;
     }
 
+
+
     .card-icon {
       width: 3rem;
       height: 3rem;
@@ -69,6 +71,14 @@
       display: flex;
       width: 100%;
       justify-content: space-between;
+      flex-direction: row;
+      flex-wrap: wrap;
+      list-style-type: none;
+      /* Remove bullets */
+      padding: 0;
+      /* Remove padding */
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
     }
 
     .rating-button {
@@ -80,16 +90,15 @@
       background-color: hsl(213, 19%, 18%);
     }
 
-    .rating button:hover {
+    .rating li:hover {
       background-color: hsl(217, 12%, 63%);
-      color: white
+      color: white;
     }
 
     .rating-active,
-    .rating button:active {
+    .rating li:active {
       background-color: hsl(25, 97%, 53%);
       color: white;
-
     }
 
     .submit-button {
@@ -107,6 +116,34 @@
       font-weight: 400;
     }
 
+    #thank-you-section {
+      text-align: center;
+    }
+
+    #selectedItemSection {
+      color: hsl(25, 97%, 53%);
+      background-color: hsl(213, 19%, 18%);
+      width: fit-content;
+      padding: 0.5rem 1rem 0.5rem 1rem;
+      margin: 0 auto;
+      border-radius: 2rem;
+    }
+
+    #thank-you-message {
+      color: hsl(216, 12%, 54%)
+    }
+
+    #rating-section>* {
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    #thank-you-section>* {
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+
+    }
+
     @media screen and (max-width: 375px) {
       .card {
         width: 70%;
@@ -119,44 +156,39 @@
   <!-- Rating state start -->
 
   <div class="card">
-    <div class="card-icon">
-      <img src="./images/icon-star.svg" alt="icon-star" />
-    </div>
-    <div class="card-title">How did we do?</div>
-    <div class="card-description">
-      Please let us know how we did with your support request. All feedback is
-      appreciated to help us improve our offering!
-
-      <div class="rating" id="rating">
-        <div>
-          <button class="rating-button">1</button>
-        </div>
-        <div>
-          <button class="rating-button">2</button>
-        </div>
-        <div>
-          <button class="rating-button">3</button>
-        </div>
-        <div>
-          <button class="rating-button">4</button>
-        </div>
-        <div>
-          <button class="rating-button">5</button>
-        </div>
+    <div id="rating-section">
+      <div class="card-icon">
+        <img src="./images/icon-star.svg" alt="icon-star" />
       </div>
-      <button class="submit-button">SUBMIT</button>
+      <div class="card-title">How did we do?</div>
+      <div class="card-description">
+        Please let us know how we did with your support request. All feedback
+        is appreciated to help us improve our offering!
 
-
+        <ul class="rating" id="rating">
+          <li class="rating-button">1</li>
+          <li class="rating-button">2</li>
+          <li class="rating-button">3</li>
+          <li class="rating-button">4</li>
+          <li class="rating-button">5</li>
+        </ul>
+        <button class="submit-button" onclick="onFormSubmit()">SUBMIT</button>
+      </div>
       <!-- Thank you state start -->
-      <div id="thank-you-section">
-
+    </div>
+    <div id="thank-you-section">
+      <img id="thank-you-image" src="/images/illustration-thank-you.svg" />
+      <div id="selectedItemSection">
         You selected
-        <!-- Add rating here -->
-        out of 5 Thank you! We appreciate you taking the time to give a rating.
-        If you ever need more support, don’t hesitate to get in touch!
-        <!-- Thank you state end -->
-
+        <span id="selectedItem"></span><!-- Add rating here -->
+        out of 5
       </div>
+      <div style="font-size: xx-large;">Thank you!</div>
+      <div id="thank-you-message">
+        We appreciate you taking the time to give a rating. If you ever need
+        more support, don’t hesitate to get in touch!
+      </div>
+      <!-- Thank you state end -->
     </div>
   </div>
   <div class="attribution">
@@ -168,29 +200,28 @@
 
 <script>
   const thankYouDiv = document.getElementById('thank-you-section');
-  thankYouDiv.style.display = "none";
+  const ratingDiv = document.getElementById('rating-section');
+  thankYouDiv.style.display = 'none';
   // Add active class to the current button (highlight it)
-  let header = document.getElementById("rating");
-  let btns = header.getElementsByTagName("button");
-  Array.from(btns).forEach(element => {
-    element.addEventListener("click", function () {
-
-      document.querySelector('.rating-active')?.classList.remove('rating-active');
+  let header = document.getElementById('rating');
+  let btns = header.getElementsByTagName('li');
+  Array.from(btns).forEach((element) => {
+    element.addEventListener('click', function () {
+      document
+        .querySelector('.rating-active')
+        ?.classList.remove('rating-active');
       element.classList.add('rating-active');
-    }
-    )
+    });
   });
-  // for (var i = 0; i < btns.length; i++) {
-  //   btns[i].addEventListener("click", function () {
-  //     var current = document.getElementsByClassName("rating-active");
-  //     if (current.length > 0) {
-  //       current[0].className = current[0].className.replace(" rating-active", "");
-  //     }
-  //     this.className += " rating-active";
-  //   });
-  // }
 
-
+  function onFormSubmit() {
+    const selectedItem =
+      document.getElementsByClassName('rating-active')[0].innerHTML;
+    const selectedItemSpan = document.getElementById('selectedItem');
+    selectedItemSpan.innerHTML = selectedItem;
+    thankYouDiv.style.display = 'block';
+    ratingDiv.style.display = 'none';
+  }
 </script>
 
 </html>
